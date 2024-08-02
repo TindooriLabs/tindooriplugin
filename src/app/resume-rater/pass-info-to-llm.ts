@@ -1,9 +1,9 @@
 import OpenAI from "openai";
 import type { Resume } from "lib/redux/types";
 
-const key = "fill-in-your-key-here";
+const key = "sk-proj-A3aw0wHT6SxgFRcsEqpjT3BlbkFJfibK4T8mR7uEMwgTFuxg";
 
-async function asyncRateResume(jobDescription: string, resume: Resume) {
+export const rateResume = async (jobDescription: string, resume: Resume) => {
     const openai = new OpenAI({apiKey: key, dangerouslyAllowBrowser: true});
 
     const systemContent = "You are an HR Assistant. I will give you a job description, and when you receive resume content, rate the content out of 10 based on the job description and also provide feedback. Here's the job description: \n" + jobDescription;
@@ -21,19 +21,7 @@ async function asyncRateResume(jobDescription: string, resume: Resume) {
       return completion.choices[0].message.content;
 }
 
-export const rateResume = (
-    jobDescription: string,
-    resume: Resume
-): string => {
-    var result: string | null = null;
-    const output = asyncRateResume(jobDescription, resume)
-        .then(content => 
-            {result = content;});
-    
-    return result;
-    
-    
-};
+
 
 export const resumeToString = (resume: Resume): string => {
     var result = "name: " + resume.profile.name + "\n";

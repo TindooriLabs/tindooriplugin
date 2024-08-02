@@ -45,11 +45,13 @@ export default function ResumeParser() {
   const sections = groupLinesIntoSections(lines);
   const resume = extractResumeFromSections(sections);
 
-  const [ratingResult, setRatingResult] = useState('');
+  const [response, setResponse] = useState('');
 
-  function clickUpdateRating() {
-    const newRating = rateResume(jobDescription, resume);
-    setRatingResult(newRating);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const aiResponse = await rateResume(jobDescription, resume);
+    setResponse(aiResponse);
   };
   
 
@@ -128,11 +130,11 @@ export default function ResumeParser() {
             <p>
               {resumeToString(resume)}
             </p>
-            <button onClick={clickUpdateRating}>
+            <button onClick={handleSubmit}>
               Get Rated
             </button>
             <p>
-              {ratingResult}
+              {response}
             </p>
             
             <div className="mt-3">
