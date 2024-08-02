@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import type { Resume } from "lib/redux/types";
 
-const key = "sk-proj-A3aw0wHT6SxgFRcsEqpjT3BlbkFJfibK4T8mR7uEMwgTFuxg";
+const key = "fill-in-your-key-here";
 
 export const rateResume = async (jobDescription: string, resume: Resume) => {
     const openai = new OpenAI({apiKey: key, dangerouslyAllowBrowser: true});
