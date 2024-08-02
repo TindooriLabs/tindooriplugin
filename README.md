@@ -78,3 +78,6 @@ Go into src/app/resume-rater/pass-info-to-llm.ts and update the chatgpt openai
 run locally via `npm run dev`
 
 copy paste a job description into the field, enter a resume, and press get rated.
+
+
+At current state, the software is kind of gross and lowkey unsafe too (viruses can be smuggled in via the PDF)
