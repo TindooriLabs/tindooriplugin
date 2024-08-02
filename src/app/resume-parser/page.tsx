@@ -5,6 +5,7 @@ import type { TextItems } from "lib/parse-resume-from-pdf/types";
 import { groupTextItemsIntoLines } from "lib/parse-resume-from-pdf/group-text-items-into-lines";
 import { groupLinesIntoSections } from "lib/parse-resume-from-pdf/group-lines-into-sections";
 import { extractResumeFromSections } from "lib/parse-resume-from-pdf/extract-resume-from-sections";
+import { resumeToString, rateResume } from "resume-rater/pass-info-to-llm";
 import { ResumeDropzone } from "components/ResumeDropzone";
 import { cx } from "lib/cx";
 import { Heading, Link, Paragraph } from "components/documentation";
@@ -39,9 +40,18 @@ const defaultFileUrl = RESUME_EXAMPLES[0]["fileUrl"];
 export default function ResumeParser() {
   const [fileUrl, setFileUrl] = useState(defaultFileUrl);
   const [textItems, setTextItems] = useState<TextItems>([]);
+  const [jobDescription, setJobDescription] = useState('');
   const lines = groupTextItemsIntoLines(textItems || []);
   const sections = groupLinesIntoSections(lines);
   const resume = extractResumeFromSections(sections);
+
+  const [ratingResult, setRatingResult] = useState('');
+
+  function clickUpdateRating() {
+    const newRating = rateResume(jobDescription, resume);
+    setRatingResult(newRating);
+  };
+  
 
   useEffect(() => {
     async function test() {
@@ -106,6 +116,25 @@ export default function ResumeParser() {
               is well formatted and easy to read. It is beneficial to have the
               name and email accurately parsed at the very least.
             </Paragraph>
+            <label>
+              Job Description:
+              <input
+                onChange={e=>setJobDescription(e.target.value)}
+              />
+            </label>
+            <p>
+              {jobDescription}
+            </p>
+            <p>
+              {resumeToString(resume)}
+            </p>
+            <button onClick={clickUpdateRating}>
+              Get Rated
+            </button>
+            <p>
+              {ratingResult}
+            </p>
+            
             <div className="mt-3">
               <ResumeDropzone
                 onFileUrlChange={(fileUrl) =>
